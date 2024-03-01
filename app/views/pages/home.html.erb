@@ -1,0 +1,96 @@
+<style>
+  /* Style pour le conteneur du post-it */
+
+.postit-container {
+  position: relative; /* Définir la position relative */
+  display: inline-block; /* Affiche les éléments post-it en ligne */
+  margin-right: 10px;
+
+}
+
+  /* Style pour l'image du post-it */
+  .postit-img {
+    width: 200px; /* Ajustement de la largeur */
+    height: 200px; /* Ajustement de la hauteur */
+    position: absolute; /* Position absolue */
+    top: 0; /* Aligner en haut */
+    left: 0; /* Aligner à gauche */
+    z-index: 1; /* Assurer que l'image est en arrière-plan */
+  }
+
+  /* Style pour la zone de texte du post-it */
+  .postit-text {
+    width: 120px;
+    height: 120px;
+    position: absolute; /* Position absolue */
+    top: 40px; /* Ajustement de la position verticale */
+    left: 40px; /* Ajustement de la position horizontale */
+    z-index: 2; /* Assurer que le textarea est au-dessus de l'image */
+    background-color: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+  }
+
+  #postitContainer {
+  display: flex; /* Utilisation de flexbox */
+  flex-wrap: wrap; /* Les éléments passent à la ligne si nécessaire */
+
+}
+
+</style>
+
+<%= javascript_include_tag "rails-ujs" %>
+
+<div style="position: fixed; bottom: 15px; right: 15px;">
+  <button id="generateButton" class="button" style="vertical-align:middle"><span>Generate </span></button>
+</div>
+
+<div id="postitContainer" style="overflow: auto;">
+  <!-- Conteneur pour les éléments post-it -->
+</div>
+
+<%= image_tag "postit.png", id: "postitTemplate", style: "display: none;", size: "200x200", alt: "" %>
+
+<script>
+  // postits.js
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("generateButton").addEventListener("click", function() {
+    Rails.ajax({
+      url: "/postits",
+      type: "POST",
+      success: function(data) {
+        var postitDiv = document.createElement("div");
+        postitDiv.classList.add("postit-container");
+
+        // Créer un nouvel élément img pour l'image du post-it
+        var postitImg = document.createElement("img");
+        postitImg.src = "/assets/postit.png"; // Le chemin vers votre image postit.png
+        postitImg.width = 200; // Largeur de l'image
+        postitImg.height = 200; // Hauteur de l'image
+        postitImg.setAttribute("alt", ""); // Ajouter un attribut alt vide pour des raisons d'accessibilité
+
+        postitDiv.appendChild(postitImg);
+
+        // Créer un nouvel élément textarea pour le texte
+        var postitText = document.createElement("textarea");
+        // postitText.placeholder = "Ajouter du texte...";
+        // postitText.style.width = "120px";
+        // postitText.style.height = "120px";
+        postitText.classList.add("postit-text");
+
+        postitDiv.appendChild(postitText);
+
+        // Ajouter l'image du post-it à la fin du body
+        // document.body.appendChild(postitImg);
+        document.getElementById("postitContainer").appendChild(postitDiv);
+      },
+      error: function(data) {
+        console.error("Une erreur s'est produite lors de la génération du post-it.");
+      }
+    });
+  });
+});
+
+</script>
