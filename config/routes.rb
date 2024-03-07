@@ -6,5 +6,6 @@ Rails.application.routes.draw do
   # root "articles#index"
   root to: "pages#home"
   # get "home", to: "pages#home"
-  resources :postits, only: [:create]
+  # resources :postits, only: [:create]
+  resources :postits, only: [:index, :create, :destroy, :update]
 end

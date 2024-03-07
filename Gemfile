@@ -29,6 +29,8 @@ gem "jbuilder"
 gem "devise"
 
 gem 'rails-ujs'
+gem 'jquery-rails'
+
 
 
 

@@ -2,7 +2,8 @@
   /* Style pour le conteneur du post-it */
 
 .postit-container {
-  position: relative; /* Définir la position relative */
+
+  position: fixed;
   display: inline-block; /* Affiche les éléments post-it en ligne */
   margin-right: 10px;
 
@@ -35,7 +36,25 @@
   #postitContainer {
   display: flex; /* Utilisation de flexbox */
   flex-wrap: wrap; /* Les éléments passent à la ligne si nécessaire */
+}
 
+.poubelle {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin-right: 30px;
+  margin-top: 10px;
+  width: 100px;
+  height: auto;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: red;
 }
 
 </style>
@@ -46,51 +65,11 @@
   <button id="generateButton" class="button" style="vertical-align:middle"><span>Generate </span></button>
 </div>
 
+<div>
+  <img src="/assets/poubelle.png" class="poubelle">
+</div>
+
 <div id="postitContainer" style="overflow: auto;">
   <!-- Conteneur pour les éléments post-it -->
 </div>
 
-<%= image_tag "postit.png", id: "postitTemplate", style: "display: none;", size: "200x200", alt: "" %>
-
-<script>
-  // postits.js
-
-document.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("generateButton").addEventListener("click", function() {
-    Rails.ajax({
-      url: "/postits",
-      type: "POST",
-      success: function(data) {
-        var postitDiv = document.createElement("div");
-        postitDiv.classList.add("postit-container");
-
-        // Créer un nouvel élément img pour l'image du post-it
-        var postitImg = document.createElement("img");
-        postitImg.src = "/assets/postit.png"; // Le chemin vers votre image postit.png
-        postitImg.width = 200; // Largeur de l'image
-        postitImg.height = 200; // Hauteur de l'image
-        postitImg.setAttribute("alt", ""); // Ajouter un attribut alt vide pour des raisons d'accessibilité
-
-        postitDiv.appendChild(postitImg);
-
-        // Créer un nouvel élément textarea pour le texte
-        var postitText = document.createElement("textarea");
-        // postitText.placeholder = "Ajouter du texte...";
-        // postitText.style.width = "120px";
-        // postitText.style.height = "120px";
-        postitText.classList.add("postit-text");
-
-        postitDiv.appendChild(postitText);
-
-        // Ajouter l'image du post-it à la fin du body
-        // document.body.appendChild(postitImg);
-        document.getElementById("postitContainer").appendChild(postitDiv);
-      },
-      error: function(data) {
-        console.error("Une erreur s'est produite lors de la génération du post-it.");
-      }
-    });
-  });
-});
-
-</script>
