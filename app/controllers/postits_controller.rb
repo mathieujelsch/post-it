@@ -1,13 +1,6 @@
 class PostitsController < ApplicationController
   before_action :authenticate_user!
 
-  # def create
-  #   respond_to do |format|
-  #     format.js { head :ok }
-  #   end
-  # end
-
-
   def index
     @postits = current_user.postits
     respond_to do |format|
@@ -16,7 +9,7 @@ class PostitsController < ApplicationController
   end
 
   def create
-    @postit = Postit.new(postit_params)
+    @postit = Postit.new
     @postit.user_id = current_user.id
     if @postit.save
       respond_to do |format|
@@ -50,6 +43,6 @@ class PostitsController < ApplicationController
   private
 
   def postit_params
-    params.require(:postit).permit(:content)
+    params.require(:postit).permit(:content, :coord_x, :coord_y)
   end
 end

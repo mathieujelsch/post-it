@@ -5,8 +5,7 @@ import './generate_button';
 import './mouvement';
 import './display_postits';
 import './update_postits';
+import './position';
 
 
 //= require rails-ujs
-
-
